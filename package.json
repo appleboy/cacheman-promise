@@ -1,13 +1,13 @@
 {
   "name": "cacheman-promise",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "cacheman with a promise interface.",
   "main": "./lib/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "gulp"
+    "test": "mocha test"
   },
   "repository": {
     "type": "git",

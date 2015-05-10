@@ -3,6 +3,7 @@
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 var del = require('del');
+var mocha = require('gulp-mocha');
 
 
 gulp.task('coverage', ['clean'], function(){
@@ -19,7 +20,7 @@ gulp.task('jshint', function () {
 });
 
 function mochaStream(){
-  return gulp.src('test/*.js', {read: false})
+  return gulp.src('test/index.js')
     .pipe($.mocha({
       reporter: 'spec'
     }));
