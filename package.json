@@ -1,0 +1,35 @@
+{
+  "name": "cacheman-promise",
+  "version": "1.0.0",
+  "description": "cacheman with a promise interface.",
+  "main": "./lib/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/appleboy/cacheman-promise.git"
+  },
+  "keywords": [
+    "cache",
+    "cacheman",
+    "promise",
+    "file",
+    "redis",
+    "memory",
+    "mongodb",
+    "caching",
+    "mongo",
+    "store",
+    "ttl"
+  ],
+  "author": "Bo-Yi Wu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/appleboy/cacheman-promise/issues"
+  },
+  "homepage": "https://github.com/appleboy/cacheman-promise"
+}
