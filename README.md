@@ -24,7 +24,7 @@ Cacheman-promise only support `set`, `get`, `del`, `clear` and `wrap` promise in
 
 Please refer to [Cacheman Options API](https://github.com/cayasso/cacheman/blob/master/README.md#cachemanname-options)
 
-```
+```javascript
 var Cacheman = require('cacheman-promise');
 
 var options = {
@@ -43,7 +43,7 @@ var cache = new Cacheman(options);
 
 Usage:
 
-```
+```javascript
 var key = 'foo';
 var data = 'bar';
 
@@ -58,7 +58,7 @@ cache.set(key, {name: data})
 
 Usage:
 
-```
+```javascript
 cache.get('foo')
   .then(function(val){
     // output "{name: 'bar'}"
@@ -70,7 +70,7 @@ cache.get('foo')
 
 Usage:
 
-```
+```javascript
 cache.del('foo')
   .then(function(){
     console.log('foo was deleted');
@@ -79,7 +79,7 @@ cache.del('foo')
 
 ### cache.clear([fn])
 
-```
+```javascript
 cache.del()
   .then(function(){
     console.log('cache is now clear');
@@ -90,7 +90,7 @@ cache.del()
 
 Wraps a function in cache. I.e., the first time the function is run, its results are stored in cache so subsequent calls retrieve from cache instead of calling the function.
 
-```
+```javascript
 var key = 'foo';
 var data = 'bar';
 
