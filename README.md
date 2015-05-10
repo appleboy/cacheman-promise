@@ -4,6 +4,10 @@
 
 [![NPM](https://nodei.co/npm/cacheman-promise.png?downloads=true&stars=true)](https://nodei.co/npm/cacheman-promise/)
 
+[npm-url]: https://www.npmjs.org/package/cacheman-promise
+[npm-image]: http://img.shields.io/npm/v/cacheman-promise.svg
+[downloads-image]: http://img.shields.io/npm/dm/cacheman-promise.svg
+
 > [Cacheman](https://github.com/cayasso/cacheman) library with a promise interface.
 
 ## Installation
