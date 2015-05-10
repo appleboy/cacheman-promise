@@ -2,7 +2,7 @@
 
 var should = require('should');
 var faker = require('faker');
-var Cacheman = require('../lib')
+var Cacheman = require('../lib');
 
 describe('Cache Engine test:', function() {
   var cache;
@@ -119,6 +119,37 @@ describe('Cache Engine test:', function() {
 
       // get value from cache
       cache.get(key, function(val) {
+        val.should.be.eql(data);
+        done();
+      });
+    });
+  });
+
+  it('test wrap defaul data function.', function(done) {
+    var key = faker.name.findName();
+    var data = faker.name.findName();
+
+    cache.wrap(key, function() {
+      return data;
+    }, function(val) {
+      val.should.be.eql(data);
+
+      // get value from cache
+      cache.get(key, function(val) {
+        val.should.be.eql(data);
+        done();
+      });
+    });
+  });
+
+  it('hit cache for wrap.', function(done) {
+    var key = faker.name.findName();
+    var data = faker.name.findName();
+
+    cache.set(key, data, function(val) {
+
+      // get value from cache
+      cache.wrap(key, {a: 1}, function(val) {
         val.should.be.eql(data);
         done();
       });
@@ -246,7 +277,7 @@ describe('Cache Engine test:', function() {
   it('should accept `redis` as valid engine', function (done) {
     var key = faker.name.findName();
     var data = faker.name.findName();
-    cache = new Cacheman('testing', {engine: 'redis'});
+    cache = new Cacheman({engine: 'redis'});
     cache.set(key, {name: data}, function (val) {
 
       cache.get(key, function (val) {
@@ -260,7 +291,7 @@ describe('Cache Engine test:', function() {
   it('should accept `mongo` as valid engine', function (done) {
     var key = faker.name.findName();
     var data = faker.name.findName();
-    cache = new Cacheman('testing', {engine: 'mongo'});
+    cache = new Cacheman({engine: 'mongo'});
     cache.set(key, {name: data}, function (val) {
 
       cache.get(key, function (val) {

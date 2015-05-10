@@ -15,5 +15,14 @@
   "unused": "vars",
   "strict": true,
   "globals": {"$mtk": false},
-  "predef": ["-Promise"]
+  "predef": ["-Promise"],
+  "globals": {
+    "describe": false,
+    "it": false,
+    "before": false,
+    "beforeEach": false,
+    "after": false,
+    "afterEach": false,
+    "should": false
+  }
 }
