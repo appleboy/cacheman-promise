@@ -23,6 +23,8 @@ describe('Cache Engine test:', function() {
     cache.del.should.be.ok;
     cache.clear.should.be.ok;
     cache.wrap.should.be.ok;
+    cache.cache.should.be.ok;
+    cache.use.should.be.ok;
   });
 
   it('should store items', function (done) {
@@ -51,7 +53,6 @@ describe('Cache Engine test:', function() {
     cache.set('test3', false, function (val) {
 
       cache.get('test3', function (val) {
-
         val.should.be.false;
         done();
       });
@@ -62,10 +63,101 @@ describe('Cache Engine test:', function() {
     cache.set('test4', null, function (val) {
 
       cache.get('test4', function (val) {
-
         should.not.exist(val);
         done();
       });
+    });
+  });
+
+  it('should cache items', function (done) {
+    var value = Date.now()
+    var key = "k" + Date.now();
+    cache.cache(key, value, 10, function (err, data) {
+      data.should.be.eql(value);
+      done();
+    });
+  });
+
+  it('should allow middleware when using `cache` method', function (done) {
+
+    this.timeout(0);
+    var value = Date.now()
+    , key = "k" + Date.now();
+
+    function middleware() {
+      return function(key, data, ttl, next){
+        next();
+      };
+    }
+
+    cache.use(middleware());
+    cache.cache(key, value, 1, function (err, data) {
+      data.should.be.eql(value);
+      done();
+    });
+  });
+
+  it('should cache false', function (done) {
+    var key = "k" + Date.now();
+    cache.cache(key, false, function (err, data) {
+      data.should.be.false;
+      done();
+    });
+  });
+
+  it('should cache null', function (done) {
+    var key = "k" + Date.now();
+    cache.cache(key, null, 10, function (err, data) {
+      should.not.exist(data);
+      done();
+    });
+  });
+
+  it('should cache zero', function (done) {
+    var key = "k" + Date.now();
+
+    cache.cache(key, 0, function (err, data) {
+      data.should.be.eql(0);
+      done();
+    });
+  });
+
+  it('should allow middleware to overwrite caching values', function (done) {
+    var value = Date.now()
+    , key = "k" + Date.now();
+
+    function middleware() {
+      return function(key, data, ttl, next){
+        next(null, 'data', 1);
+      };
+    }
+
+    cache.use(middleware());
+    cache.cache(key, value, 1, function (err, data) {
+      data.should.be.eql('data');
+      done();
+    });
+  });
+
+  it('should allow middleware to accept errors', function (done) {
+
+    var value = Date.now()
+      , key = "k" + Date.now()
+      , error = new Error('not');
+
+    function middleware() {
+      return function(key, data, ttl, next){
+        next(error);
+      };
+    }
+
+    cache.use(middleware());
+
+    cache.cache(key, value, 1, function (err, data) {
+      if (1 === arguments.length && err) {
+        err.should.be.eql(error);
+        done();
+      }
     });
   });
 
