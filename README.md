@@ -80,7 +80,7 @@ cache.del('foo')
 ### cache.clear([fn])
 
 ```javascript
-cache.del()
+cache.clear()
   .then(function(){
     console.log('cache is now clear');
   });
