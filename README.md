@@ -68,12 +68,23 @@ cache.get('foo')
 
 ### cache.del(key, [fn])
 
+You can pass `array` or `string` as key.
+
 Usage:
 
 ```javascript
 cache.del('foo')
   .then(function(){
     console.log('foo was deleted');
+  });
+```
+
+or
+
+```javascript
+cache.del(['foo', 'bar'])
+  .then(function(){
+    console.log('foo and bar was deleted');
   });
 ```
 

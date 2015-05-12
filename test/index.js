@@ -2,6 +2,7 @@
 
 var should = require('should');
 var faker = require('faker');
+var Promise = require('bluebird');
 var Cacheman = require('../lib');
 
 describe('Cache Engine test:', function() {
@@ -321,6 +322,37 @@ describe('Cache Engine test:', function() {
 
         done();
       });
+  });
+
+  it('test delete multiple key', function(done) {
+    var keyOne = faker.name.findName();
+    var keyTwo = faker.name.findName();
+    var data = faker.name.findName();
+
+    Promise.all([
+      cache.set(keyOne, data),
+      cache.set(keyTwo, data)
+    ]).then(function() {
+
+      return Promise.props({
+        keyOne: cache.get(keyOne),
+        keyTwo: cache.get(keyTwo)
+      });
+    }).then(function(keys) {
+
+      return cache.del([keyOne, keyTwo]);
+    }).then(function(){
+      return Promise.props({
+        keyOne: cache.get(keyOne),
+        keyTwo: cache.get(keyTwo)
+      });
+    }).then(function(keys) {
+
+      should.not.exist(keys.keyOne);
+      should.not.exist(keys.keyTwo);
+      done();
+    });
+
   });
 
   it('test clear callback.', function(done) {
