@@ -109,12 +109,11 @@ cache.wrap(key, data)
   .then(function(val) {
 
     // get foo key from cache
-    cache.get(key, function(val) {
+    return cache.get(key);
+  }).then(function(val) {
 
-      // output 'bar'
-      console.log(val);
-      done();
-    });
+    // output 'bar'
+    console.log(val);
   });
 ```
 

@@ -196,10 +196,10 @@ describe('Cache Engine test:', function() {
         val.should.be.eql(data);
 
         // get value from cache
-        cache.get(key, function(val) {
-          val.should.be.eql(data);
-          done();
-        });
+        return cache.get(key);
+      }).then(function(val) {
+        val.should.be.eql(data);
+        done();
       });
   });
 
