@@ -56,6 +56,8 @@ cache.set(key, {name: data})
 
 ### cache.get(key, fn)
 
+You can pass `array` or `string` as key.
+
 Usage:
 
 ```javascript
@@ -63,6 +65,22 @@ cache.get('foo')
   .then(function(val){
     // output "{name: 'bar'}"
     console.log(val);
+  });
+```
+
+pass `array` as multiple keys
+
+Usage:
+
+```javascript
+
+cache.set('foo', 1);
+cache.set('bar', 2);
+
+cache.get(['foo', 'bar'])
+  .then(function(result){
+    // output {"foo": 1, "bar": 2}
+    console.log(result);
   });
 ```
 
