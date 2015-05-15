@@ -61,9 +61,12 @@ You can pass `array` or `string` as key.
 Usage:
 
 ```javascript
+
+cache.set('foo', 'bar');
+
 cache.get('foo')
   .then(function(val){
-    // output "{name: 'bar'}"
+    // output "bar"
     console.log(val);
   });
 ```
