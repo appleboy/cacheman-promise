@@ -398,6 +398,24 @@ describe('Cache Engine test:', function() {
       });
   });
 
+  it('get multiple cache key.', function(done) {
+    var keyOne = faker.name.findName();
+    var keyTwo = faker.name.findName();
+    var dataOne = faker.name.findName();
+    var dataTwo = faker.name.findName();
+
+    cache.set(keyOne, dataOne);
+    cache.set(keyTwo, dataTwo);
+
+    cache.get([keyOne, keyTwo])
+      .then(function(result) {
+
+        result[keyOne].should.be.eql(dataOne);
+        result[keyTwo].should.be.eql(dataTwo);
+        done();
+      });
+  });
+
   it('should accept `redis` as valid engine', function (done) {
     var key = faker.name.findName();
     var data = faker.name.findName();
