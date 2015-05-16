@@ -28,10 +28,10 @@ describe('Cache Engine test:', function() {
     cache.use.should.be.ok;
   });
 
-  it('should store items', function (done) {
-    cache.set('test1', { a: 1 }, function (val) {
+  it('should store items', function(done) {
+    cache.set('test1', { a: 1 }, function(val) {
 
-      cache.get('test1', function (val) {
+      cache.get('test1', function(val) {
 
         val.a.should.be.eql(1);
         done();
@@ -39,10 +39,10 @@ describe('Cache Engine test:', function() {
     });
   });
 
-  it('should store zero', function (done) {
-    cache.set('test2', 0, function (val) {
+  it('should store zero', function(done) {
+    cache.set('test2', 0, function(val) {
 
-      cache.get('test2', function (val) {
+      cache.get('test2', function(val) {
 
         val.should.be.eql(0);
         done();
@@ -50,111 +50,107 @@ describe('Cache Engine test:', function() {
     });
   });
 
-  it('should store false', function (done) {
-    cache.set('test3', false, function (val) {
+  it('should store false', function(done) {
+    cache.set('test3', false, function(val) {
 
-      cache.get('test3', function (val) {
+      cache.get('test3', function(val) {
         val.should.be.false;
         done();
       });
     });
   });
 
-  it('should store null', function (done) {
-    cache.set('test4', null, function (val) {
+  it('should store null', function(done) {
+    cache.set('test4', null, function(val) {
 
-      cache.get('test4', function (val) {
+      cache.get('test4', function(val) {
         should.not.exist(val);
         done();
       });
     });
   });
 
-  it('should cache items', function (done) {
+  it('should cache items', function(done) {
     var value = Date.now()
     var key = "k" + Date.now();
-    cache.cache(key, value, 10, function (err, data) {
+    cache.cache(key, value, 10, function(err, data) {
       data.should.be.eql(value);
       done();
     });
   });
 
-  it('should allow middleware when using `cache` method', function (done) {
+  it('should allow middleware when using `cache` method', function(done) {
 
     this.timeout(0);
-    var value = Date.now()
-    , key = "k" + Date.now();
+    var value = Date.now(), key = "k" + Date.now();
 
     function middleware() {
-      return function(key, data, ttl, next){
+      return function(key, data, ttl, next) {
         next();
       };
     }
 
     cache.use(middleware());
-    cache.cache(key, value, 1, function (err, data) {
+    cache.cache(key, value, 1, function(err, data) {
       data.should.be.eql(value);
       done();
     });
   });
 
-  it('should cache false', function (done) {
+  it('should cache false', function(done) {
     var key = "k" + Date.now();
-    cache.cache(key, false, function (err, data) {
+    cache.cache(key, false, function(err, data) {
       data.should.be.false;
       done();
     });
   });
 
-  it('should cache null', function (done) {
+  it('should cache null', function(done) {
     var key = "k" + Date.now();
-    cache.cache(key, null, 10, function (err, data) {
+    cache.cache(key, null, 10, function(err, data) {
       should.not.exist(data);
       done();
     });
   });
 
-  it('should cache zero', function (done) {
+  it('should cache zero', function(done) {
     var key = "k" + Date.now();
 
-    cache.cache(key, 0, function (err, data) {
+    cache.cache(key, 0, function(err, data) {
       data.should.be.eql(0);
       done();
     });
   });
 
-  it('should allow middleware to overwrite caching values', function (done) {
-    var value = Date.now()
-    , key = "k" + Date.now();
+  it('should allow middleware to overwrite caching values', function(done) {
+    var value = Date.now(), key = "k" + Date.now();
 
     function middleware() {
-      return function(key, data, ttl, next){
+      return function(key, data, ttl, next) {
         next(null, 'data', 1);
       };
     }
 
     cache.use(middleware());
-    cache.cache(key, value, 1, function (err, data) {
+    cache.cache(key, value, 1, function(err, data) {
       data.should.be.eql('data');
       done();
     });
   });
 
-  it('should allow middleware to accept errors', function (done) {
+  it('should allow middleware to accept errors', function(done) {
 
-    var value = Date.now()
-      , key = "k" + Date.now()
-      , error = new Error('not');
+    var value = Date.now(), key = "k" + Date.now(), error = new Error('not');
 
     function middleware() {
-      return function(key, data, ttl, next){
+      return function(key, data, ttl, next) {
         next(error);
       };
     }
 
     cache.use(middleware());
 
-    cache.cache(key, value, 1, function (err, data) {
+    cache.cache(key, value, 1, function(err, data) {
       if (1 === arguments.length && err) {
         err.should.be.eql(error);
         done();
@@ -341,7 +337,7 @@ describe('Cache Engine test:', function() {
     }).then(function(keys) {
 
       return cache.del([keyOne, keyTwo]);
-    }).then(function(){
+    }).then(function() {
       return Promise.props({
         keyOne: cache.get(keyOne),
         keyTwo: cache.get(keyTwo)
@@ -416,13 +412,13 @@ describe('Cache Engine test:', function() {
       });
   });
 
-  it('should accept `redis` as valid engine', function (done) {
+  it('should accept `redis` as valid engine', function(done) {
     var key = faker.name.findName();
     var data = faker.name.findName();
     cache = new Cacheman({engine: 'redis'});
-    cache.set(key, {name: data}, function (val) {
+    cache.set(key, {name: data}, function(val) {
 
-      cache.get(key, function (val) {
+      cache.get(key, function(val) {
 
         val.name.should.be.eql(data);
         done();
@@ -430,13 +426,13 @@ describe('Cache Engine test:', function() {
     });
   });
 
-  it('should accept `mongo` as valid engine', function (done) {
+  it('should accept `mongo` as valid engine', function(done) {
     var key = faker.name.findName();
     var data = faker.name.findName();
     cache = new Cacheman({engine: 'mongo'});
-    cache.set(key, {name: data}, function (val) {
+    cache.set(key, {name: data}, function(val) {
 
-      cache.get(key, function (val) {
+      cache.get(key, function(val) {
 
         val.name.should.be.eql(data);
         done();
