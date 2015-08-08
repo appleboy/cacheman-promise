@@ -1,6 +1,6 @@
 # Cacheman-Promise
 
-[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status](https://travis-ci.org/appleboy/cacheman-promise.png?branch=master)](https://travis-ci.org/appleboy/cacheman-promise) [![Dependency Status](https://david-dm.org/appleboy/cacheman-promise.svg)](https://david-dm.org/appleboy/cacheman-promise)
+[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status](https://travis-ci.org/appleboy/cacheman-promise.png?branch=master)](https://travis-ci.org/appleboy/cacheman-promise) [![Dependency Status](https://david-dm.org/appleboy/cacheman-promise.svg)](https://david-dm.org/appleboy/cacheman-promise) [![Coverage Status](https://coveralls.io/repos/appleboy/cacheman-promise/badge.svg?branch=master&service=github)](https://coveralls.io/github/appleboy/cacheman-promise?branch=master)
 
 [![NPM](https://nodei.co/npm/cacheman-promise.png?downloads=true&stars=true)](https://nodei.co/npm/cacheman-promise/)
 
