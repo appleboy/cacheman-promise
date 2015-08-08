@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha test"
+    "test": "mocha test",
+    "cover": "node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*"
   },
   "repository": {
     "type": "git",
@@ -41,7 +42,7 @@
     "lodash": "^3.8.0"
   },
   "devDependencies": {
-    "coveralls": "^2.11.2",
+    "coveralls": "^2.11.3",
     "del": "^1.1.1",
     "faker": "^2.1.2",
     "gulp": "^3.8.11",
@@ -50,6 +51,7 @@
     "gulp-load-plugins": "^0.10.0",
     "gulp-mocha": "^2.0.1",
     "iconv-lite": "^0.4.8",
+    "istanbul": "^0.3.17",
     "jshint-reporter-jscs": "^0.1.0",
     "mocha": "^2.2.4",
     "should": "^6.0.1"
