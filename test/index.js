@@ -175,11 +175,10 @@ describe('Cache Engine test:', function() {
     cache.wrap(key, data)
       .then(function(val) {
 
-        cache.get(key, function(val) {
-
-          val.should.be.eql(val);
-          done();
-        });
+        return cache.get(key);
+      }).then(function(val) {
+        val.should.be.eql(val);
+        done();
       });
   });
 
@@ -214,7 +213,7 @@ describe('Cache Engine test:', function() {
     });
   });
 
-  it('test wrap defaul data function.', function(done) {
+  it('test wrap default data function.', function(done) {
     var key = faker.name.findName();
     var data = faker.name.findName();
 
@@ -243,6 +242,36 @@ describe('Cache Engine test:', function() {
         done();
       });
     });
+  });
+
+  it('wrap function support cache value is zero.', function(done) {
+    var key = faker.name.findName();
+    var data = 0;
+
+    cache.set(key, data)
+      .then(function() {
+
+        // get value from cache
+        return cache.wrap(key, 'appleboy', function(val) {
+          val.should.be.eql(data);
+          done();
+        });
+      });
+  });
+
+  it('wrap function support cache value is null.', function(done) {
+    var key = faker.name.findName();
+    var data = null;
+
+    cache.set(key, data)
+      .then(function() {
+
+        // get value from cache
+        return cache.wrap(key, 'appleboy', function(val) {
+          should.not.exist(val);
+          done();
+        });
+      });
   });
 
   it('test set callback.', function(done) {
