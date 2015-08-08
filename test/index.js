@@ -259,16 +259,16 @@ describe('Cache Engine test:', function() {
       });
   });
 
-  it('wrap function support cache value is null.', function(done) {
+  it('wrap function support cache value is empty string.', function(done) {
     var key = faker.name.findName();
-    var data = null;
+    var data = '';
 
     cache.set(key, data)
       .then(function() {
 
         // get value from cache
         return cache.wrap(key, 'appleboy', function(val) {
-          should.not.exist(val);
+          val.should.be.eql(data);
           done();
         });
       });
