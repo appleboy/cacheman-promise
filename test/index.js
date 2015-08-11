@@ -244,6 +244,19 @@ describe('Cache Engine test:', function() {
     });
   });
 
+  it('support wrap callback function return zero value.', function(done) {
+    var key = faker.name.findName();
+
+    cache.wrap(key, function() { return 0; })
+      .then(function() {
+        return cache.get(key);
+      }).then(function(val) {
+
+        val.should.be.eql(0);
+        done();
+      });
+  });
+
   it('wrap function support cache value is zero.', function(done) {
     var key = faker.name.findName();
     var data = 0;
