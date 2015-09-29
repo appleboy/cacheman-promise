@@ -89,7 +89,7 @@ cache.get(['foo', 'bar'])
 
 ### cache.pull(key, default)
 
-If you need to retrieve an item from the cache and then delete it, you may use the `pull` method. Like the get method, null will be returned if the item does not exist in the cache.
+If you need to retrieve an item from the cache and then delete it, you may use the `pull` method. Like the `get` method, `null` will be returned if the item does not exist in the cache.
 
 ```javascript
 cache.set('foo', 'bar');
@@ -106,7 +106,7 @@ cache.pull('foo')
   });
 ```
 
-You can pass default value as second paramaeter if cache doesn't exist.
+You can pass default value as second paramaeter if the item doesn't exist in the cache.
 
 ```javascript
 // make sure `foo` cache doesn't exist.
