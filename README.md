@@ -8,7 +8,7 @@
 [npm-image]: http://img.shields.io/npm/v/cacheman-promise.svg
 [downloads-image]: http://img.shields.io/npm/dm/cacheman-promise.svg
 
-> [Cacheman](https://github.com/cayasso/cacheman) library with a promise interface.
+[Cacheman](https://github.com/cayasso/cacheman) library with a promise interface.
 
 ## Installation
 
@@ -18,7 +18,7 @@ $ npm install --save cacheman-promise
 
 ## Usage
 
-Cacheman-promise only support `set`, `get`, `del`, `clear` and `wrap` promise interface.
+Cacheman-promise only support `set`, `get`, `del`, `clear`, `pull` and `wrap` promise interface.
 
 ### Cacheman([name, [options]])
 
@@ -83,6 +83,38 @@ cache.set('bar', 2);
 cache.get(['foo', 'bar'])
   .then(function(result){
     // output {"foo": 1, "bar": 2}
+    console.log(result);
+  });
+```
+
+### cache.pull(key, default)
+
+If you need to retrieve an item from the cache and then delete it, you may use the `pull` method. Like the get method, null will be returned if the item does not exist in the cache.
+
+```javascript
+cache.set('foo', 'bar');
+
+cache.pull('foo')
+  .then(function(result){
+    // output 'bar'
+    console.log(result);
+  }).then(function() {
+    return cache.get('foo');
+  }).then(function(result) {
+    // output 'null'
+    console.log(result);
+  });
+```
+
+You can pass default value as second paramaeter if cache doesn't exist.
+
+```javascript
+// make sure `foo` cache doesn't exist.
+cache.del('foo');
+
+cache.pull('foo', 'bar')
+  .then(function(result){
+    // output 'bar'
     console.log(result);
   });
 ```

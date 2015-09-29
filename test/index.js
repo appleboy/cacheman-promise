@@ -198,6 +198,51 @@ describe('Cache Engine test:', function() {
       });
   });
 
+  it('test pull promise function', function(done) {
+    var key = faker.name.findName();
+    var data = faker.name.findName();
+
+    cache.wrap(key, data)
+      .then(function(val) {
+        val.should.be.eql(data);
+
+        // get value from cache
+        return cache.pull(key);
+      }).then(function(val) {
+        val.should.be.eql(data);
+
+        setTimeout(function() {
+          cache.get(key)
+            .then(function(val) {
+              should.not.exist(val);
+              done();
+            });
+        }, 50)
+      });
+  });
+
+  it('test pull promise function with default value', function(done) {
+    var key = faker.name.findName();
+    var data = faker.name.findName();
+
+    cache.pull(key, data)
+      .then(function(val) {
+        val.should.be.eql(data);
+        done();
+      });
+  });
+
+  it('test pull promise function without default value', function(done) {
+    var key = faker.name.findName();
+
+    cache.pull(key)
+      .then(function(val) {
+        // val is null
+        should.not.exist(val);
+        done();
+      });
+  });
+
   it('test wrap callback function.', function(done) {
     var key = faker.name.findName();
     var data = faker.name.findName();
