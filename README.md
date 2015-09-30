@@ -141,12 +141,23 @@ cache.del(['foo', 'bar'])
   });
 ```
 
-### cache.clear([fn])
+### cache.clear([key, [fn]])
+
+Clear all cache as follwoing:
 
 ```javascript
 cache.clear()
   .then(function(){
     console.log('cache is now clear');
+  });
+```
+
+Clear some items with `prefix name`:
+
+```javascript
+cache.clear('foo')
+  .then(function(){
+    console.log('clear cache with `foo` prefix name');
   });
 ```
 

@@ -35,7 +35,7 @@
   "homepage": "https://github.com/appleboy/cacheman-promise",
   "dependencies": {
     "bluebird": "^2.9.25",
-    "cacheman": "^1.1.0",
+    "cacheman": "appleboy/cacheman",
     "cacheman-file": "0.0.8",
     "cacheman-mongo": "^0.2.1",
     "cacheman-redis": "^0.2.0",

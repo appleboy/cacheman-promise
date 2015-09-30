@@ -5,7 +5,7 @@ var faker = require('faker');
 var Promise = require('bluebird');
 var Cacheman = require('../lib');
 
-describe('Cache Engine test:', function() {
+describe('Test Cache Engine:', function() {
   var cache;
 
   before(function(done) {
@@ -497,6 +497,34 @@ describe('Cache Engine test:', function() {
         result[keyTwo].should.be.eql(dataTwo);
         done();
       });
+  });
+
+  it('test clear cache with prefix name.', function(done) {
+    cache = new Cacheman({engine: 'redis'});
+    var data = faker.name.findName();
+
+    Promise.all([
+      cache.set('foo_1', data),
+      cache.set('foo_2', data),
+      cache.set('bar', data)
+    ]).then(function() {
+
+      return cache.clear('foo')
+    }).then(function() {
+      return cache.get('foo_1');
+    }).then(function(val) {
+      should.not.exist(val);
+
+      return cache.get('foo_2');
+    }).then(function(val) {
+      should.not.exist(val);
+
+      return cache.get('bar');
+    }).then(function(val) {
+      should.exist(val);
+
+      done();
+    });
   });
 
   it('should accept `redis` as valid engine', function(done) {
