@@ -14,8 +14,9 @@ describe('Test Cache Engine:', function() {
   });
 
   afterEach(function(done) {
-    cache.clear();
-    done();
+    cache.clear(function() {
+      done();
+    });
   });
 
   it('should have main methods', function() {
@@ -499,7 +500,7 @@ describe('Test Cache Engine:', function() {
       });
   });
 
-  it('test clear cache with prefix name.', function(done) {
+  it('test delete cache with prefix name.', function(done) {
     cache = new Cacheman({engine: 'redis'});
     var data = faker.name.findName();
 
@@ -509,7 +510,7 @@ describe('Test Cache Engine:', function() {
       cache.set('bar', data)
     ]).then(function() {
 
-      return cache.clear('foo')
+      return cache.del('foo*');
     }).then(function() {
       return cache.get('foo_1');
     }).then(function(val) {
@@ -530,7 +531,7 @@ describe('Test Cache Engine:', function() {
   it('should accept `redis` as valid engine', function(done) {
     var key = faker.name.findName();
     var data = faker.name.findName();
-    cache = new Cacheman({engine: 'redis'});
+    cache = new Cacheman('redis', {engine: 'redis'});
     cache.set(key, {name: data}, function(val) {
 
       cache.get(key, function(val) {
@@ -544,7 +545,7 @@ describe('Test Cache Engine:', function() {
   it('should accept `mongo` as valid engine', function(done) {
     var key = faker.name.findName();
     var data = faker.name.findName();
-    cache = new Cacheman({engine: 'mongo'});
+    cache = new Cacheman('mongo', {engine: 'mongo'});
     cache.set(key, {name: data}, function(val) {
 
       cache.get(key, function(val) {
