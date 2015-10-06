@@ -36,7 +36,7 @@
   "dependencies": {
     "bluebird": "^2.10.2",
     "cacheman": "appleboy/cacheman",
-    "cacheman-mongo": "^0.2.1",
+    "cacheman-mongo": "appleboy/cacheman-mongo",
     "cacheman-redis": "appleboy/cacheman-redis",
     "lodash": "^3.8.0"
   },
@@ -53,6 +53,7 @@
     "istanbul": "^0.3.17",
     "jshint-reporter-jscs": "^0.1.0",
     "mocha": "^2.2.4",
+    "pre-commit": "^1.1.1",
     "should": "^6.0.1"
   }
 }
