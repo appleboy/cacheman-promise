@@ -3,7 +3,7 @@
 import should from 'should';
 import faker from 'faker';
 import Promise from 'bluebird';
-import Cacheman from '../lib';
+import Cacheman from '../src';
 
 describe('Test Cache Engine:', () => {
   let cache;

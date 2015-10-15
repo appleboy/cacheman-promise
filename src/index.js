@@ -1,12 +1,14 @@
-'use strict';
+import Promise from 'bluebird';
+import _ from 'lodash';
+import Cacheman from 'cacheman';
 
 /**
- * Module dependencies.
+ * Cacheman-promise constructor.
+ *
+ * @param {String} name
+ * @param {Object} options
+ * @api public
  */
-
-var Promise = require('bluebird');
-var _ = require('lodash');
-var Cacheman = require('cacheman');
 
 module.exports = function(name, options) {
 
