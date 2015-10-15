@@ -35,6 +35,7 @@
   "dependencies": {
     "bluebird": "^2.10.2",
     "cacheman": "appleboy/cacheman",
+    "cacheman-memory": "appleboy/cacheman-memory",
     "cacheman-mongo": "appleboy/cacheman-mongo",
     "cacheman-redis": "appleboy/cacheman-redis",
     "lodash": "^3.8.0"

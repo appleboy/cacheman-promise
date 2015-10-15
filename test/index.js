@@ -1,555 +1,440 @@
-'use strict';
+/* global describe:false, before:false, it:false, afterEach:false */
 
-var should = require('should');
-var faker = require('faker');
-var Promise = require('bluebird');
-var Cacheman = require('../lib');
+import should from 'should';
+import faker from 'faker';
+import Promise from 'bluebird';
+import Cacheman from '../lib';
 
-describe('Test Cache Engine:', function() {
-  var cache;
+describe('Test Cache Engine:', () => {
+  let cache;
 
-  before(function(done) {
-    cache = new Cacheman('testing');
+  before((done) => {
+    cache = new Cacheman('testing', {engine: 'redis'});
     done();
   });
 
-  afterEach(function(done) {
-    cache.clear(function() {
+  afterEach((done) => {
+    cache.clear(() => {
       done();
     });
   });
 
-  it('should have main methods', function() {
+  it('should have main methods', () => {
     cache.set.should.be.ok;
     cache.get.should.be.ok;
     cache.del.should.be.ok;
     cache.clear.should.be.ok;
     cache.wrap.should.be.ok;
-    cache.cache.should.be.ok;
-    cache.use.should.be.ok;
   });
 
-  it('should store items', function(done) {
-    cache.set('test1', { a: 1 }, function(val) {
-
-      cache.get('test1', function(val) {
-
+  it('should store items', (done) => {
+    cache.set('test1', { a: 1 }, () => {
+      cache.get('test1', (val) => {
         val.a.should.be.eql(1);
         done();
       });
     });
   });
 
-  it('should store zero', function(done) {
-    cache.set('test2', 0, function(val) {
-
-      cache.get('test2', function(val) {
-
+  it('should store zero', (done) => {
+    cache.set('test2', 0, () => {
+      cache.get('test2', (val) => {
         val.should.be.eql(0);
         done();
       });
     });
   });
 
-  it('should store false', function(done) {
-    cache.set('test3', false, function(val) {
-
-      cache.get('test3', function(val) {
-        val.should.be.false;
+  it('should store false', (done) => {
+    cache.set('test3', false, () => {
+      cache.get('test3', (val) => {
+        val.should.be.eql(false);
         done();
       });
     });
   });
 
-  it('should store null', function(done) {
-    cache.set('test4', null, function(val) {
-
-      cache.get('test4', function(val) {
+  it('should store null', (done) => {
+    cache.set('test4', null, () => {
+      cache.get('test4', (val) => {
         should.not.exist(val);
         done();
       });
     });
   });
 
-  it('should cache items', function(done) {
-    var value = Date.now()
-    var key = "k" + Date.now();
-    cache.cache(key, value, 10, function(err, data) {
-      data.should.be.eql(value);
-      done();
-    });
-  });
-
-  it('should allow middleware when using `cache` method', function(done) {
-
-    this.timeout(0);
-    var value = Date.now(), key = "k" + Date.now();
-
-    function middleware() {
-      return function(key, data, ttl, next) {
-        next();
-      };
-    }
-
-    cache.use(middleware());
-    cache.cache(key, value, 1, function(err, data) {
-      data.should.be.eql(value);
-      done();
-    });
-  });
-
-  it('should cache false', function(done) {
-    var key = "k" + Date.now();
-    cache.cache(key, false, function(err, data) {
-      data.should.be.false;
-      done();
-    });
-  });
-
-  it('should cache null', function(done) {
-    var key = "k" + Date.now();
-    cache.cache(key, null, 10, function(err, data) {
-      should.not.exist(data);
-      done();
-    });
-  });
-
-  it('should cache zero', function(done) {
-    var key = "k" + Date.now();
-
-    cache.cache(key, 0, function(err, data) {
-      data.should.be.eql(0);
-      done();
-    });
-  });
-
-  it('should allow middleware to overwrite caching values', function(done) {
-    var value = Date.now(), key = "k" + Date.now();
-
-    function middleware() {
-      return function(key, data, ttl, next) {
-        next(null, 'data', 1);
-      };
-    }
-
-    cache.use(middleware());
-    cache.cache(key, value, 1, function(err, data) {
-      data.should.be.eql('data');
-      done();
-    });
-  });
-
-  it('should allow middleware to accept errors', function(done) {
-
-    var value = Date.now(), key = "k" + Date.now(), error = new Error('not');
-
-    function middleware() {
-      return function(key, data, ttl, next) {
-        next(error);
-      };
-    }
-
-    cache.use(middleware());
-
-    cache.cache(key, value, 1, function(err, data) {
-      if (1 === arguments.length && err) {
-        err.should.be.eql(error);
-        done();
-      }
-    });
-  });
-
-  it('get empty cache value if cache not found and no default value', function(done) {
-    var key = faker.name.findName();
+  it('get empty cache value if cache not found and no default value', (done) => {
+    const key = faker.name.findName();
 
     cache.wrap(key)
-      .then(function(val) {
+      .then((val) => {
         should.not.exist(val);
         done();
       });
   });
 
-  it('test get callback function', function(done) {
-    var key = faker.name.findName();
-    var data = faker.name.findName();
+  it('test get callback function', (done) => {
+    const key = faker.name.findName();
+    const data = faker.name.findName();
 
     cache.wrap(key, data)
-      .then(function(val) {
-
+      .then(() => {
         return cache.get(key);
-      }).then(function(val) {
-        val.should.be.eql(val);
+      }).then((val) => {
+        val.should.be.eql(data);
         done();
       });
   });
 
-  it('test get promise function', function(done) {
-    var key = faker.name.findName();
-    var data = faker.name.findName();
+  it('test get promise function', (done) => {
+    const key = faker.name.findName();
+    const data = faker.name.findName();
 
     cache.wrap(key, data)
-      .then(function(val) {
+      .then((val) => {
         val.should.be.eql(data);
 
         // get value from cache
         return cache.get(key);
-      }).then(function(val) {
+      }).then((val) => {
         val.should.be.eql(data);
         done();
       });
   });
 
-  it('test pull promise function', function(done) {
-    var key = faker.name.findName();
-    var data = faker.name.findName();
+  it('test pull promise function', (done) => {
+    const key = faker.name.findName();
+    const data = faker.name.findName();
 
     cache.wrap(key, data)
-      .then(function(val) {
+      .then((val) => {
         val.should.be.eql(data);
 
         // get value from cache
         return cache.pull(key);
-      }).then(function(val) {
+      }).then((val) => {
         val.should.be.eql(data);
 
-        setTimeout(function() {
+        setTimeout(() => {
           cache.get(key)
-            .then(function(val) {
-              should.not.exist(val);
+            .then((val2) => {
+              should.not.exist(val2);
               done();
             });
-        }, 50)
+        }, 50);
       });
   });
 
-  it('test pull promise function with default value', function(done) {
-    var key = faker.name.findName();
-    var data = faker.name.findName();
+  it('test pull promise function with default value', (done) => {
+    const key = faker.name.findName();
+    const data = faker.name.findName();
 
     cache.pull(key, data)
-      .then(function(val) {
+      .then((val) => {
         val.should.be.eql(data);
         done();
       });
   });
 
-  it('test pull promise function without default value', function(done) {
-    var key = faker.name.findName();
+  it('test pull promise function without default value', (done) => {
+    const key = faker.name.findName();
 
     cache.pull(key)
-      .then(function(val) {
+      .then((val) => {
         // val is null
         should.not.exist(val);
         done();
       });
   });
 
-  it('test wrap callback function.', function(done) {
-    var key = faker.name.findName();
-    var data = faker.name.findName();
+  it('test wrap callback function.', (done) => {
+    const key = faker.name.findName();
+    const data = faker.name.findName();
 
-    cache.wrap(key, data, function(val) {
+    cache.wrap(key, data, (val) => {
       val.should.be.eql(data);
 
       // get value from cache
-      cache.get(key, function(val) {
-        val.should.be.eql(data);
+      cache.get(key, (val2) => {
+        val2.should.be.eql(data);
         done();
       });
     });
   });
 
-  it('test wrap default data function.', function(done) {
-    var key = faker.name.findName();
-    var data = faker.name.findName();
+  it('test wrap default data function.', (done) => {
+    const key = faker.name.findName();
+    const data = faker.name.findName();
 
-    cache.wrap(key, function() {
+    cache.wrap(key, () => {
       return data;
-    }, function(val) {
+    }, (val) => {
       val.should.be.eql(data);
 
       // get value from cache
-      cache.get(key, function(val) {
-        val.should.be.eql(data);
+      cache.get(key, (val2) => {
+        val2.should.be.eql(data);
         done();
       });
     });
   });
 
-  it('hit cache for wrap.', function(done) {
-    var key = faker.name.findName();
-    var data = faker.name.findName();
+  it('hit cache for wrap.', (done) => {
+    const key = faker.name.findName();
+    const data = faker.name.findName();
 
-    cache.set(key, data, function(val) {
-
+    cache.set(key, data, () => {
       // get value from cache
-      cache.wrap(key, {a: 1}, function(val) {
+      cache.wrap(key, {a: 1}, (val) => {
         val.should.be.eql(data);
         done();
       });
     });
   });
 
-  it('support wrap callback function return zero value.', function(done) {
-    var key = faker.name.findName();
+  it('support wrap callback function return zero value.', (done) => {
+    const key = faker.name.findName();
 
-    cache.wrap(key, function() { return 0; })
-      .then(function() {
+    cache.wrap(key, () => { return 0; })
+      .then(() => {
         return cache.get(key);
-      }).then(function(val) {
-
+      }).then((val) => {
         val.should.be.eql(0);
         done();
       });
   });
 
-  it('wrap function support cache value is zero.', function(done) {
-    var key = faker.name.findName();
-    var data = 0;
+  it('wrap function support cache value is zero.', (done) => {
+    const key = faker.name.findName();
+    const data = 0;
 
     cache.set(key, data)
-      .then(function() {
-
+      .then(() => {
         // get value from cache
-        return cache.wrap(key, 'appleboy', function(val) {
+        return cache.wrap(key, 'appleboy', (val) => {
           val.should.be.eql(data);
           done();
         });
       });
   });
 
-  it('wrap function support cache value is empty string.', function(done) {
-    var key = faker.name.findName();
-    var data = '';
+  it('wrap function support cache value is empty string.', (done) => {
+    const key = faker.name.findName();
+    const data = '';
 
     cache.set(key, data)
-      .then(function() {
-
+      .then(() => {
         // get value from cache
-        return cache.wrap(key, 'appleboy', function(val) {
+        return cache.wrap(key, 'appleboy', (val) => {
           val.should.be.eql(data);
           done();
         });
       });
   });
 
-  it('test set callback.', function(done) {
-    var key = faker.name.findName();
-    var data = faker.name.findName();
+  it('test set callback.', (done) => {
+    const key = faker.name.findName();
+    const data = faker.name.findName();
 
-    cache.set(key, data, function(val) {
-
+    cache.set(key, data, () => {
       // get value from cache
-      cache.get(key, function(val) {
+      cache.get(key, (val) => {
         val.should.be.eql(data);
         done();
       });
     });
   });
 
-  it('get empty value if time expired', function(done) {
-    this.timeout(0);
-    var key = faker.name.findName();
-    var data = faker.name.findName();
+  it('get empty value if time expired', (done) => {
+    const key = faker.name.findName();
+    const data = faker.name.findName();
 
     cache.set(key, data, 1)
-      .then(function(val) {
+      .then(() => {
         // get value from cache
         return cache.get(key);
-      }).then(function(val) {
+      }).then((val) => {
         should.exist(val);
-        setTimeout(function() {
-
-          cache.get(key, function(val) {
-            should.not.exist(val);
+        setTimeout(() => {
+          cache.get(key, (val2) => {
+            should.not.exist(val2);
             done();
           });
         }, 1100);
       });
   });
 
-  it('test del callback.', function(done) {
-    var key = faker.name.findName();
-    var data = faker.name.findName();
+  it('test del callback.', (done) => {
+    const key = faker.name.findName();
+    const data = faker.name.findName();
 
     cache.set(key, data)
-      .then(function() {
+      .then(() => {
         return cache.get(key);
-      }).then(function(val) {
+      }).then((val) => {
         val.should.be.eql(data);
 
-        return cache.del(key, function() {
-          cache.get(key, function(val) {
-            should.not.exist(val);
+        return cache.del(key, () => {
+          cache.get(key, (val2) => {
+            should.not.exist(val2);
             done();
           });
         });
       });
   });
 
-  it('test del promise function.', function(done) {
-    var key = faker.name.findName();
-    var data = faker.name.findName();
+  it('test del promise function.', (done) => {
+    const key = faker.name.findName();
+    const data = faker.name.findName();
 
     cache.set(key, data)
-      .then(function() {
+      .then(() => {
         return cache.get(key);
-      }).then(function(val) {
+      }).then((val) => {
         val.should.be.eql(data);
 
         return cache.del(key);
-      }).then(function() {
-
+      }).then(() => {
         return cache.get(key);
-      }).then(function(val) {
+      }).then((val) => {
         should.not.exist(val);
 
         done();
       });
   });
 
-  it('test delete multiple key', function(done) {
-    var keyOne = faker.name.findName();
-    var keyTwo = faker.name.findName();
-    var data = faker.name.findName();
+  it('test delete multiple key', (done) => {
+    const keyOne = faker.name.findName();
+    const keyTwo = faker.name.findName();
+    const data = faker.name.findName();
 
     Promise.all([
       cache.set(keyOne, data),
-      cache.set(keyTwo, data)
-    ]).then(function() {
-
+      cache.set(keyTwo, data),
+    ]).then(() => {
       return Promise.props({
         keyOne: cache.get(keyOne),
-        keyTwo: cache.get(keyTwo)
+        keyTwo: cache.get(keyTwo),
       });
-    }).then(function(keys) {
-
+    }).then(() => {
       return cache.del([keyOne, keyTwo]);
-    }).then(function() {
+    }).then(() => {
       return Promise.props({
         keyOne: cache.get(keyOne),
-        keyTwo: cache.get(keyTwo)
+        keyTwo: cache.get(keyTwo),
       });
-    }).then(function(keys) {
-
+    }).then((keys) => {
       should.not.exist(keys.keyOne);
       should.not.exist(keys.keyTwo);
       done();
     });
-
   });
 
-  it('test clear callback.', function(done) {
-    var keyOne = faker.name.findName();
-    var keyTwo = faker.name.findName();
-    var data = faker.name.findName();
+  it('test clear callback.', (done) => {
+    const keyOne = faker.name.findName();
+    const keyTwo = faker.name.findName();
+    const data = faker.name.findName();
 
     cache.set(keyOne, data);
     cache.set(keyTwo, data);
 
-    cache.clear(function() {
+    cache.clear(() => {
       return cache.get(keyOne);
-    }).then(function(val) {
+    }).then((val) => {
       should.not.exist(val);
 
       return cache.get(keyTwo);
-    }).then(function(val) {
+    }).then((val) => {
       should.not.exist(val);
 
       done();
     });
   });
 
-  it('test clear promise function.', function(done) {
-    var keyOne = faker.name.findName();
-    var keyTwo = faker.name.findName();
-    var data = faker.name.findName();
+  it('test clear promise function.', (done) => {
+    const keyOne = faker.name.findName();
+    const keyTwo = faker.name.findName();
+    const data = faker.name.findName();
 
     cache.set(keyOne, data);
     cache.set(keyTwo, data);
 
     cache.clear()
-      .then(function() {
+      .then(() => {
         return cache.get(keyOne);
-      }).then(function(val) {
+      }).then((val) => {
         should.not.exist(val);
 
         return cache.get(keyTwo);
-      }).then(function(val) {
+      }).then((val) => {
         should.not.exist(val);
 
         done();
       });
   });
 
-  it('get multiple cache key.', function(done) {
-    var keyOne = faker.name.findName();
-    var keyTwo = faker.name.findName();
-    var dataOne = faker.name.findName();
-    var dataTwo = faker.name.findName();
+  it('get multiple cache key.', (done) => {
+    const keyOne = faker.name.findName();
+    const keyTwo = faker.name.findName();
+    const dataOne = faker.name.findName();
+    const dataTwo = faker.name.findName();
 
     cache.set(keyOne, dataOne);
     cache.set(keyTwo, dataTwo);
 
     cache.get([keyOne, keyTwo])
-      .then(function(result) {
-
+      .then((result) => {
         result[keyOne].should.be.eql(dataOne);
         result[keyTwo].should.be.eql(dataTwo);
         done();
       });
   });
 
-  it('test delete cache with prefix name.', function(done) {
+  it('test delete cache with prefix name.', (done) => {
     cache = new Cacheman({engine: 'redis'});
-    var data = faker.name.findName();
+    const data = faker.name.findName();
 
     Promise.all([
       cache.set('foo_1', data),
       cache.set('foo_2', data),
-      cache.set('bar', data)
-    ]).then(function() {
-
+      cache.set('bar', data),
+    ]).then(() => {
       return cache.del('foo*');
-    }).then(function() {
+    }).then(() => {
       return cache.get('foo_1');
-    }).then(function(val) {
+    }).then((val) => {
       should.not.exist(val);
 
       return cache.get('foo_2');
-    }).then(function(val) {
+    }).then((val) => {
       should.not.exist(val);
 
       return cache.get('bar');
-    }).then(function(val) {
+    }).then((val) => {
       should.exist(val);
 
       done();
     });
   });
 
-  it('should accept `redis` as valid engine', function(done) {
-    var key = faker.name.findName();
-    var data = faker.name.findName();
+  it('should accept `redis` as valid engine', (done) => {
+    const key = faker.name.findName();
+    const data = faker.name.findName();
     cache = new Cacheman('redis', {engine: 'redis'});
-    cache.set(key, {name: data}, function(val) {
-
-      cache.get(key, function(val) {
-
+    cache.set(key, {name: data}, () => {
+      cache.get(key, (val) => {
         val.name.should.be.eql(data);
         done();
       });
     });
   });
 
-  it('should accept `mongo` as valid engine', function(done) {
-    var key = faker.name.findName();
-    var data = faker.name.findName();
+  it('should accept `mongo` as valid engine', (done) => {
+    const key = faker.name.findName();
+    const data = faker.name.findName();
     cache = new Cacheman('mongo', {engine: 'mongo'});
-    cache.set(key, {name: data}, function(val) {
-
-      cache.get(key, function(val) {
-
+    cache.set(key, {name: data}, () => {
+      cache.get(key, (val) => {
         val.name.should.be.eql(data);
         done();
       });
