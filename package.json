@@ -10,7 +10,7 @@
     "lint": "eslint test src",
     "build": "babel -d lib/ src/",
     "test": "istanbul cover _mocha -- --compilers js:babel/register -R spec",
-    "prepublish": "npm run build"
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
