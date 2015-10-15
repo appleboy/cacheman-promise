@@ -1,6 +1,6 @@
 {
   "name": "cacheman-promise",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "cacheman with a promise interface.",
   "main": "./lib/index.js",
   "directories": {
