@@ -1,5 +1,5 @@
 import Promise from 'bluebird';
-import _ from 'lodash';
+import {isObject, isUndefined, isNull, isFunction, isArray, isString, forEach} from 'lodash';
 import Cacheman from 'cacheman';
 
 /**
@@ -22,8 +22,7 @@ export default class CachemanPromise {
    */
 
   constructor(name, options = {}) {
-
-    if (name && _.isObject(name)) {
+    if (name && isObject(name)) {
       options = name;
       name = null;
     }
@@ -54,7 +53,6 @@ export default class CachemanPromise {
 
     return new Promise((resolve, reject) => {
       this.cache.get(key, (error, val) => {
-
         if (error) {
           return reject(error);
         }
@@ -62,27 +60,25 @@ export default class CachemanPromise {
         return resolve(val);
       });
     }).then((val) => {
-
       // return cache value.
-      if (!_.isUndefined(val) && !_.isNull(val)) {
+      if (!isUndefined(val) && !isNull(val)) {
         isCached = true;
         return val;
       }
 
       // return default value.
-      if (_.isFunction(data)) {
+      if (isFunction(data)) {
         return data();
       }
 
       return data || null;
     }).then((val) => {
-
       // set cache if missing cache.
       if (!isCached) {
         this.set(key, val, ttl);
       }
 
-      return (cb && _.isFunction(cb)) ? cb(val) : val;
+      return (cb && isFunction(cb)) ? cb(val) : val;
     });
   }
 
@@ -96,10 +92,8 @@ export default class CachemanPromise {
    * @api private
    */
   _get = (key, cb) => {
-
     return new Promise((resolve, reject) => {
       this.cache.get(key, (error, val) => {
-
         if (error) {
           return reject(error);
         }
@@ -107,8 +101,7 @@ export default class CachemanPromise {
         return resolve(val);
       });
     }).then((val) => {
-
-      return (cb && _.isFunction(cb)) ? cb(val) : val;
+      return (cb && isFunction(cb)) ? cb(val) : val;
     });
   }
 
@@ -122,10 +115,9 @@ export default class CachemanPromise {
    * @api public
    */
   get = (key, cb) => {
-
-    if (_.isArray(key)) {
-      let item = {};
-      _.forEach(key, (value) => {
+    if (isArray(key)) {
+      const item = {};
+      forEach(key, (value) => {
         item[value] = this._get(value);
       });
 
@@ -147,7 +139,6 @@ export default class CachemanPromise {
    * @api public
    */
   set = (key, data, ttl, cb) => {
-
     if (typeof ttl === 'function') {
       cb = ttl;
       ttl = null;
@@ -162,31 +153,22 @@ export default class CachemanPromise {
         return resolve(val);
       });
     }).then((val) => {
-
-      return (cb && _.isFunction(cb)) ? cb(val) : val;
+      return (cb && isFunction(cb)) ? cb(val) : val;
     });
   }
 
   /**
-   * Set an entry.
+   * Delete an entry after pull the data.
    *
    * @param {String} key
    * @param {Mixed} data
-   * @param {Number} ttl
-   * @param {Function} cb
    *
    * @return promise
    * @api public
    */
-  pull = (key, data) => {
-    // check default value is undefined or Null
-    if (_.isUndefined(data)) {
-      data = null;
-    }
-
+  pull = (key, data = null) => {
     return new Promise((resolve, reject) => {
       this.cache.get(key, (error, val) => {
-
         if (error) {
           return reject(error);
         }
@@ -194,11 +176,10 @@ export default class CachemanPromise {
         return resolve(val);
       });
     }).then((val) => {
-
       // delete cache key
       this.del(key);
 
-      return (!_.isUndefined(val) && !_.isNull(val)) ? val : data;
+      return (!isUndefined(val) && !isNull(val)) ? val : data;
     });
   }
 
@@ -212,8 +193,7 @@ export default class CachemanPromise {
    * @api public
    */
   del = (key, cb) => {
-
-    if (_.isString(key)) {
+    if (isString(key)) {
       key = [key];
     }
 
@@ -221,7 +201,6 @@ export default class CachemanPromise {
       .map((row) => {
         return new Promise((resolve, reject) => {
           this.cache.del(row, (err, data) => {
-
             if (err) {
               return reject(err);
             }
@@ -229,8 +208,8 @@ export default class CachemanPromise {
             return resolve(data);
           });
         });
-      }).then(function() {
-        return (cb && _.isFunction(cb)) ? cb() : '';
+      }).then(() => {
+        return (cb && isFunction(cb)) ? cb() : '';
       });
   }
 
@@ -243,19 +222,16 @@ export default class CachemanPromise {
    * @api public
    */
   clear = (cb) => {
-
     return new Promise((resolve, reject) => {
       this.cache.clear((error) => {
-
         if (error) {
           return reject(error);
         }
 
         return resolve();
       });
-    }).then(function() {
-
-      return (cb && _.isFunction(cb)) ? cb() : '';
+    }).then(() => {
+      return (cb && isFunction(cb)) ? cb() : '';
     });
   }
 }
