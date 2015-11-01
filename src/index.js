@@ -43,7 +43,8 @@ export default class CachemanPromise {
    * @return promise
    * @api public
    */
-  wrap = (key, data, ttl, cb) => {
+
+  wrap(key, data, ttl, cb) {
     let isCached = false;
 
     if (typeof ttl === 'function') {
@@ -91,7 +92,8 @@ export default class CachemanPromise {
    *
    * @api private
    */
-  _get = (key, cb) => {
+
+  _get(key, cb) {
     return new Promise((resolve, reject) => {
       this.cache.get(key, (error, val) => {
         if (error) {
@@ -114,7 +116,8 @@ export default class CachemanPromise {
    *
    * @api public
    */
-  get = (key, cb) => {
+
+  get(key, cb) {
     if (isArray(key)) {
       const item = {};
       forEach(key, (value) => {
@@ -138,7 +141,8 @@ export default class CachemanPromise {
    * @return promise
    * @api public
    */
-  set = (key, data, ttl, cb) => {
+
+  set(key, data, ttl, cb) {
     if (typeof ttl === 'function') {
       cb = ttl;
       ttl = null;
@@ -166,7 +170,8 @@ export default class CachemanPromise {
    * @return promise
    * @api public
    */
-  pull = (key, data = null) => {
+
+  pull(key, data = null) {
     return new Promise((resolve, reject) => {
       this.cache.get(key, (error, val) => {
         if (error) {
@@ -192,7 +197,8 @@ export default class CachemanPromise {
    * @return promise
    * @api public
    */
-  del = (key, cb) => {
+
+  del(key, cb) {
     if (isString(key)) {
       key = [key];
     }
@@ -221,7 +227,8 @@ export default class CachemanPromise {
    * @return promise
    * @api public
    */
-  clear = (cb) => {
+
+  clear(cb) {
     return new Promise((resolve, reject) => {
       this.cache.clear((error) => {
         if (error) {
