@@ -203,7 +203,7 @@ export default class CachemanPromise {
       key = [key];
     }
 
-    return new Promise.resolve(key)
+    return Promise.resolve(key)
       .map((row) => {
         return new Promise((resolve, reject) => {
           this.cache.del(row, (err, data) => {

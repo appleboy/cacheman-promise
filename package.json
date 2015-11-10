@@ -15,6 +15,10 @@
     "type": "git",
     "url": "https://github.com/appleboy/cacheman-promise.git"
   },
+  "pre-commit": [
+    "lint",
+    "test"
+  ],
   "keywords": [
     "cache",
     "cacheman",
