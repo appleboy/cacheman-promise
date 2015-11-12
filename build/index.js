@@ -1,14 +1,10 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 var _bluebird = require('bluebird');
 
@@ -19,6 +15,12 @@ var _lodash = require('lodash');
 var _cacheman = require('cacheman');
 
 var _cacheman2 = _interopRequireDefault(_cacheman);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
 
 /**
  * Cacheman-promise constructor.
@@ -40,16 +42,16 @@ var CachemanPromise = (function () {
    */
 
   function CachemanPromise(name) {
-    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
     _classCallCheck(this, CachemanPromise);
+
+    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
     if (name && (0, _lodash.isObject)(name)) {
       options = name;
       name = null;
     }
 
-    this.cache = new _cacheman2['default'](name, options);
+    this.cache = new _cacheman2.default(name, options);
   }
 
   /**
@@ -78,7 +80,7 @@ var CachemanPromise = (function () {
         ttl = null;
       }
 
-      return new _bluebird2['default'](function (resolve, reject) {
+      return new _bluebird2.default(function (resolve, reject) {
         _this.cache.get(key, function (error, val) {
           if (error) {
             return reject(error);
@@ -124,7 +126,7 @@ var CachemanPromise = (function () {
     value: function _get(key, cb) {
       var _this2 = this;
 
-      return new _bluebird2['default'](function (resolve, reject) {
+      return new _bluebird2.default(function (resolve, reject) {
         _this2.cache.get(key, function (error, val) {
           if (error) {
             return reject(error);
@@ -160,11 +162,11 @@ var CachemanPromise = (function () {
           });
 
           return {
-            v: _bluebird2['default'].props(item)
+            v: _bluebird2.default.props(item)
           };
         })();
 
-        if (typeof _ret === 'object') return _ret.v;
+        if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
       }
 
       return this._get(key, cb);
@@ -192,7 +194,7 @@ var CachemanPromise = (function () {
         ttl = null;
       }
 
-      return new _bluebird2['default'](function (resolve, reject) {
+      return new _bluebird2.default(function (resolve, reject) {
         _this4.cache.set(key, data, ttl, function (error, val) {
           if (error) {
             return reject(error);
@@ -222,7 +224,7 @@ var CachemanPromise = (function () {
 
       var data = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
 
-      return new _bluebird2['default'](function (resolve, reject) {
+      return new _bluebird2.default(function (resolve, reject) {
         _this5.cache.get(key, function (error, val) {
           if (error) {
             return reject(error);
@@ -257,8 +259,8 @@ var CachemanPromise = (function () {
         key = [key];
       }
 
-      return new _bluebird2['default'].resolve(key).map(function (row) {
-        return new _bluebird2['default'](function (resolve, reject) {
+      return _bluebird2.default.resolve(key).map(function (row) {
+        return new _bluebird2.default(function (resolve, reject) {
           _this6.cache.del(row, function (err, data) {
             if (err) {
               return reject(err);
@@ -286,7 +288,7 @@ var CachemanPromise = (function () {
     value: function clear(cb) {
       var _this7 = this;
 
-      return new _bluebird2['default'](function (resolve, reject) {
+      return new _bluebird2.default(function (resolve, reject) {
         _this7.cache.clear(function (error) {
           if (error) {
             return reject(error);
@@ -303,5 +305,4 @@ var CachemanPromise = (function () {
   return CachemanPromise;
 })();
 
-exports['default'] = CachemanPromise;
-module.exports = exports['default'];
+exports.default = CachemanPromise;
