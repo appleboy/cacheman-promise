@@ -428,16 +428,4 @@ describe('Test Cache Engine:', () => {
       });
     });
   });
-
-  it('should accept `mongo` as valid engine', (done) => {
-    const key = faker.name.findName();
-    const data = faker.name.findName();
-    cache = new Cacheman('mongo', {engine: 'mongo'});
-    cache.set(key, {name: data}, () => {
-      cache.get(key, (val) => {
-        val.name.should.be.eql(data);
-        done();
-      });
-    });
-  });
 });
