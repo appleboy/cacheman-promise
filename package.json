@@ -1,6 +1,6 @@
 {
   "name": "cacheman-promise",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "description": "cacheman with a promise interface.",
   "main": "./build/index.js",
   "directories": {
@@ -42,7 +42,7 @@
   "dependencies": {
     "bluebird": "^2.10.2",
     "cacheman": "^2.0.5",
-    "cacheman-redis": "^1.0.1",
+    "cacheman-redis": "appleboy/cacheman-redis",
     "lodash": "^3.8.0"
   },
   "devDependencies": {
