@@ -25,10 +25,7 @@ Cacheman-promise only support `set`, `get`, `del`, `clear`, `pull` and `wrap` pr
 Please refer to [Cacheman Options API](https://github.com/cayasso/cacheman/blob/master/README.md#cachemanname-options)
 
 ```javascript
-// ES5
-var Cacheman = require('cacheman-promise').default;
-// ES6
-import Cacheman from 'cacheman-promise'
+var Cacheman = require('cacheman-promise');
 
 var options = {
   ttl: 90,
