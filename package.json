@@ -40,7 +40,7 @@
   },
   "homepage": "https://github.com/appleboy/cacheman-promise",
   "dependencies": {
-    "bluebird": "^2.10.2",
+    "bluebird": "^3.1.1",
     "cacheman": "appleboy/cacheman",
     "cacheman-redis": "^1.1.2",
     "lodash": "^3.8.0"
@@ -53,11 +53,11 @@
     "babel-preset-stage-2": "^6.3.13",
     "coveralls": "^2.11.3",
     "eslint": "^1.6.0",
-    "eslint-config-airbnb": "^1.0.0",
-    "faker": "^2.1.2",
-    "istanbul": "^0.3.17",
+    "eslint-config-airbnb": "^3.0.0",
+    "faker": "^3.0.1",
+    "istanbul": "^0.4.1",
     "mocha": "^2.2.4",
     "pre-commit": "^1.1.1",
-    "should": "^6.0.1"
+    "should": "^8.0.2"
   }
 }
