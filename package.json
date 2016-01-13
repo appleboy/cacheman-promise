@@ -43,7 +43,7 @@
     "bluebird": "^3.1.1",
     "cacheman": "appleboy/cacheman",
     "cacheman-redis": "^1.1.2",
-    "lodash": "^3.8.0"
+    "lodash": "^4.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.3.17",
